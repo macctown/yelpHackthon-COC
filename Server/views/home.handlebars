@@ -3,10 +3,58 @@
 <p>Here's the list of APIs we have for calling by Android client</p>
 <ul>
 <li>
-	<a href="/auth/facebook">Login with Facebook</a>
-	<P>REQUEST URL: http://waterping.com:3000/auth/facebook</p>
-	<p>RESPONSE: {"_id":"56c81207d36351b565495699","__v":0,"facebook":{"name":"Wei Zhang","token":"CAAMl1jhQwXkBAJoLWXLSti6vouZCaJVzsEVuguT1SzOmBsagXNNd16xlTnIFFZCzTpZBqrPBg7CZAjJT4rno7ZCEsDjcZB2Co1Hk2iGA3jPS4RnKlNfEfTLzJipjxOEnmMQuOnb3MeUnQKPDkTEuuewXcBNnsOf9OZB3fcLMWnKPmhwPNwXpFAiK12MDk8yZC1UZD","id":"1122951877750315"}} <p>
+	<a href="/test/facebook">Test API</a>
+	<p>TYPE: get</p>
+	<P>REQUEST URL: http://waterping.com:8080/test</p>
+	<p>RESPONSE: 
+	<pre class="demoRes">{"test":"result of test"}</pre>
+	<p>
 </li>
-
-<li></li>
+<li>
+	<a href="/auth/facebook">Login with Facebook</a>
+	<p>TYPE: get</p>
+	<P>REQUEST URL: http://waterping.com:8080/auth/facebook</p>
+	<p>RESPONSE: 
+	<pre>
+		This is not a api! The result is from /api/user/id. (It direct to /api/user/id automatically when user login successfully in FB)
+	</pre>
+	<p>
+</li>
+<li>
+	<a href="/api/user/1122951877750315">Get user information by Id(fb-id)</a>
+	<p>TYPE: get</p>
+	<P>REQUEST URL: http://waterping.com:8080/api/user/xxxx</p>
+	<p>RESPONSE: 
+	<pre class="demoRes">{"_id":"56c81207d36351b565495699","__v":0,"facebook":{"name":"Wei Zhang","token":"CAAMl1jhQwXkBAJoLWXLSti6vouZCaJVzsEVuguT1SzOmBsagXNNd16xlTnIFFZCzTpZBqrPBg7CZAjJT4rno7ZCEsDjcZB2Co1Hk2iGA3jPS4RnKlNfEfTLzJipjxOEnmMQuOnb3MeUnQKPDkTEuuewXcBNnsOf9OZB3fcLMWnKPmhwPNwXpFAiK12MDk8yZC1UZD","id":"1122951877750315"}}</pre>
+	<p>
+</li>
+<li>
+	<a href="/api/yelp/nearBy/10">Get Chinese Food in {Boston} within {x} miles</a>
+	<p>TYPE: get</p>
+	<P>REQUEST URL: http://waterping.com:8080/api/yelp/nearBy/xxxx</p>
+	<p>RESPONSE: 
+	<pre class="demoRes">
+	{"yelpSearchNearByResponse":{"data":{"region":{"span":{"latitude_delta":0,"longitude_delta":0},"center":{"latitude":42.3600825,"longitude":-71.0588801}},"total":1,"businesses":[{"is_claimed":true,"rating":3.5,"mobile_url":"http://m.yelp.com/biz/legal-test-kitchen-logan-airport-terminal-a-boston-3?utm_campaign=yelp_api&utm_medium=api_v2_search&utm_source=v4hjI53TEiOPzQxkazpR6A","rating_img_url":"https://s3-media1.fl.yelpcdn.com/assets/2/www/img/5ef3eb3cb162/ico/stars/v1/stars_3_half.png","review_count":158,"name":"Legal Test Kitchen - Logan Airport Terminal A","rating_img_url_small":"https://s3-media1.fl.yelpcdn.com/assets/2/www/img/2e909d5d3536/ico/stars/v1/stars_small_3_half.png","url":"http://www.yelp.com/biz/legal-test-kitchen-logan-airport-terminal-a-boston-3?utm_campaign=yelp_api&utm_medium=api_v2_search&utm_source=v4hjI53TEiOPzQxkazpR6A","categories":[["Seafood","seafood"],["Breakfast & Brunch","breakfast_brunch"]],"menu_date_updated":1457027037,"phone":"6175681888","snippet_text":"This is my go to restaurant when traveling out of terminal A at BOS. \n\nYes the line to sit down can get long, but these guys turn tables fast. The will...","image_url":"https://s3-media4.fl.yelpcdn.com/bphoto/VDJQHRypqPVwZubDBYYHAg/ms.jpg","snippet_image_url":"http://s3-media3.fl.yelpcdn.com/photo/VXoePGo_OjR_IA8HRoaOaA/ms.jpg","display_phone":"+1-617-568-1888","rating_img_url_large":"https://s3-media3.fl.yelpcdn.com/assets/2/www/img/bd9b7a815d1b/ico/stars/v1/stars_large_3_half.png","menu_provider":"single_platform","id":"legal-test-kitchen-logan-airport-terminal-a-boston-3","is_closed":false,"location":{"city":"Boston","display_address":["1 Harborside Dr","Downtown","Boston, MA 02128"],"geo_accuracy":9.5,"neighborhoods":["Downtown"],"postal_code":"02128","country_code":"US","address":["1 Harborside Dr"],"coordinate":{"latitude":42.3600825,"longitude":-71.0588801},"state_code":"MA"}}]}}}
+	</pre>
+	<p>
+</li>
+<li>
+	<a href="/api/yelp/getBusinessbyId/yelp-san-francisco">Get Restaurant Information by ID</a>
+	<p>TYPE: get</p>
+	<P>REQUEST URL: http://waterping.com:8080//api/yelp/getBusinessbyId/xxxx</p>
+	<p>RESPONSE: 
+	<pre class="demoRes">
+{"yelpSearchNearByResponse":{"data":{"is_claimed":true,"rating":2.5,"mobile_url":"http://m.yelp.com/biz/yelp-san-francisco?utm_campaign=yelp_api&utm_medium=api_v2_business&utm_source=v4hjI53TEiOPzQxkazpR6A","rating_img_url":"https://s3-media4.fl.yelpcdn.com/assets/2/www/img/c7fb9aff59f9/ico/stars/v1/stars_2_half.png","review_count":8054,"name":"Yelp","rating_img_url_small":"https://s3-media4.fl.yelpcdn.com/assets/2/www/img/8e8633e5f8f0/ico/stars/v1/stars_small_2_half.png","url":"http://www.yelp.com/biz/yelp-san-francisco?utm_campaign=yelp_api&utm_medium=api_v2_business&utm_source=v4hjI53TEiOPzQxkazpR6A","categories":[["Local Flavor","localflavor"],["Mass Media","massmedia"]],"reviews":[{"rating":3,"excerpt":"It's my 100th review and I'm going to review Yelp. \n\nSometimes I love Yelp and sometimes I hate Yelp. I love being able to find anything wherever I'm at. I...","time_created":1456985673,"rating_image_url":"https://s3-media3.fl.yelpcdn.com/assets/2/www/img/34bc8086841c/ico/stars/v1/stars_3.png","rating_image_small_url":"https://s3-media3.fl.yelpcdn.com/assets/2/www/img/902abeed0983/ico/stars/v1/stars_small_3.png","user":{"image_url":"http://s3-media3.fl.yelpcdn.com/photo/-m5qcDKAsjFyHWNJHZhZ9w/ms.jpg","id":"-7lRmqCel_euGCBijT7BwQ","name":"William T."},"rating_image_large_url":"https://s3-media1.fl.yelpcdn.com/assets/2/www/img/e8b5b79d37ed/ico/stars/v1/stars_large_3.png","id":"XaQ1l20UJy2DbyBie8Q_lg"}],"phone":"4159083801","snippet_text":"I really don't know why anyone would give Yelp anything other than 5 stars. When I think of what Yelp has done for me, I couldn't possibly be happier.\n\n*...","image_url":"https://s3-media3.fl.yelpcdn.com/bphoto/nQK-6_vZMt5n88zsAS94ew/ms.jpg","snippet_image_url":"http://s3-media4.fl.yelpcdn.com/photo/8klyDYCvvmMYIUe0nH0yMQ/ms.jpg","display_phone":"+1-415-908-3801","rating_img_url_large":"https://s3-media2.fl.yelpcdn.com/assets/2/www/img/d63e3add9901/ico/stars/v1/stars_large_2_half.png","id":"yelp-san-francisco","is_closed":false,"location":{"cross_streets":"Natoma St & Minna St","city":"San Francisco","display_address":["140 New Montgomery St","Financial District","San Francisco, CA 94105"],"geo_accuracy":9.5,"neighborhoods":["Financial District","SoMa"],"postal_code":"94105","country_code":"US","address":["140 New Montgomery St"],"coordinate":{"latitude":37.7867703362929,"longitude":-122.399958372115},"state_code":"CA"}}}}
+	</pre>
+	<p>
+</li>
 </ul>
+
+<script>
+$( document ).ready(function() {
+  $('.demoRes').each(function(i, obj) {
+  	 var jsonObj = eval("("+$(this).text()+")");
+     $(this).html(JSON.stringify(jsonObj, undefined, 2));
+	});
+});
+</script>
