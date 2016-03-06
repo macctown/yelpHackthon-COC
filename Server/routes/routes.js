@@ -32,7 +32,7 @@ module.exports = function(app, passport){
 	});
 
 	app.get('/test', function(req, res){
-		logger.info('User get to test page');
+		logger.info('User get to test page from IP: ['+req.client.remoteAddress+"]");
 		var testRes= '{"test":"result of test"}';
 		res.json(JSON.parse(testRes));
 	});
@@ -61,7 +61,6 @@ module.exports = function(app, passport){
 		
 		yelp.search({ term: 'chinese food', radius_filter: req.params.radius, location:'Boston', limit:'10' })
 		.then(function (data) {
-			 console.error(data);
 		  res.json({yelpSearchNearByResponse:{data}});
 		})
 		.catch(function (err) {
@@ -72,7 +71,28 @@ module.exports = function(app, passport){
 	});
 
 
+	app.get('/api/yelp/getBusinessbyId/:id',function(req, res){
+		var yelp = new Yelp({
+		  consumer_key: configAuth.yelp.consumer_key,
+		  consumer_secret: configAuth.yelp.consumer_secret,
+		  token: configAuth.yelp.token,
+		  token_secret: configAuth.yelp.token_secret,
+		});
+		
+		yelp.business(req.params.id)
+		.then(function (data) {
+			logger.info('Successfully called API: getBusinessbyId'+req.params.id);
+		  	res.json({yelpSearchNearByResponse:{data}});
+		})
+		.catch(function (err) {
+		  logger.error('Error occured at API: getBusinessbyId'+req.params.id);
+		  res.json({yelpSearchNearByResponse:{err}});
+		});
 
+	});
+
+
+	//User Login/Logout
 	app.get('/auth/facebook', passport.authenticate('facebook', {scope: ['email']}));
 
 	app.get('/auth/facebook/callback', function(req, res, next) {
