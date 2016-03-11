@@ -1,7 +1,10 @@
 package com.itheima.login;
 
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.Serializable;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
@@ -23,12 +26,21 @@ import org.json.JSONObject;
 import org.json.simple.parser.JSONParser;
 
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.util.Base64;
+import android.util.Log;
 import android.app.Activity;
+import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.ParseException;
 import android.view.Menu;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.BaseAdapter;
 import android.widget.EditText;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -38,127 +50,142 @@ import com.google.gson.JsonParser;
 import com.itheima.Asynchttpclient.R;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
+import com.loopj.android.image.SmartImageView;
 
 public class SearchNearbyActivity extends Activity {
-
+    private EditText et;
+	//private TextView tv_html;
+	private ListView lv;
+	private List<Store> storeLists;
 	
-	private EditText et;
-	private TextView tv_html;
+	
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_searchnearby);
-
-		
+            
 		et = (EditText) findViewById(R.id.et);
-		tv_html = (TextView)findViewById(R.id.tv_html);
+		lv = (ListView) findViewById(R.id.lv);
+		//initListData();
+
+        //tv_html = (TextView)findViewById(R.id.tv_html);
 	}
 	
-    //通过输入range搜索附近 
-	//Json解析 根据http://waterping.com:8080/ 里的格式
+	
 	
 	public void clickSearchNearby(View v) {
-		String range = et.getText().toString().trim(); 
-		String path =  "http://waterping.com:8080/api/yelp/nearBy/" + range + "/";
-		
-		AsyncHttpClient client = new AsyncHttpClient();
-		client.get(path, new AsyncHttpResponseHandler(){
-            //请求成功的回调
-			@Override
-			public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
-				try{	
-					 String str = new String (responseBody);
-					 log(str);  
-				     JSONObject json = new JSONObject(str);  
-				    //把   latitude_delta 从json中解析出来  其他类似
-				     log("Int from JSONArray from JSON Object \t"  
-			                + json.getJSONObject("yelpSearchNearByResponse").getJSONObject("data").getJSONObject("region").getJSONObject("span").getInt("latitude_delta"));  
-				        
-				     int lag = json.getJSONObject("yelpSearchNearByResponse").getJSONObject("data").getJSONObject("region").getJSONObject("span").getInt("latitude_delta");  
-				    //显示 latitude_delta，for test, 实际上不需要
-				        tv_html.setText(String.valueOf(lag));
-				}  catch (Exception e){
-				    	e.printStackTrace();
-				    }
-				
-				
-				//Toast.makeText(getApplicationContext(), new String(responseBody), 1).show();
-			   	//tv_html.setText(new String(responseBody));
-		  }
-		
-			//请求失败的回调
-			@Override
-			public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
-				Toast.makeText(getApplicationContext(), "NOresponse", 1).show();
-				
-			}
-		});	
-		
+		     String range = et.getText().toString().trim();   
+			 initListData(range);
+	
 	}
 	
+	
+	
+		private void initListData(final String range) {
+		new Thread() {
 
-	private static void log(Object obj) {  
-        System.out.println(obj.toString());  
-    }
+			public void run() {
+
+				try {
+					String path = "http://waterping.com:8080/api/yelp/nearBy/" + range +"/"; 
+	
+					URL url = new URL(path);
+
+					// [2.3]拿到httpurlconnection对象 用于发送或者接收数据
+					HttpURLConnection conn = (HttpURLConnection) url
+							.openConnection();
+					// [2.4]设置发送get请求
+					conn.setRequestMethod("GET");// get要求大写 默认就是get请求
+					// [2.5]设置请求超时时间
+					conn.setConnectTimeout(5000);
+					// [2.6]获取服务器返回的状态码
+					int code = conn.getResponseCode();
+					// [2.7]如果code == 200 说明请求成功
+					if (code == 200) {
+						// [2.8]获取服务器返回的数据 是以流的形式返回的
+						InputStream in = conn.getInputStream();
+						String str = StreamTools.readStream(in);
+						JSONObject json = new JSONObject(str);  
+						storeLists = ParseJSONutils.ParseJSONnearby(json);
+
+						System.out.println("storeLists:"+storeLists.size());
+						
+						runOnUiThread(new  Runnable() {
+							public void run() {
+								//[3]更新ui  把数据展示到listview上 
+								lv.setAdapter(new MyAdapter());
+								
+							}
+						});
+						
+
+					}
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+
+			};
+		}.start();
+
+	}
 	
 	
+
+	//定义数据适配器
+			private class MyAdapter extends BaseAdapter {
+	            @Override
+				public int getCount() {
+	            	Log.d("Calling getCount ", "called");
+	            	return storeLists.size();
+				}
+
+				@Override
+				public Object getItem(int position) {
+					return null;
+				}
+
+				@Override
+				public long getItemId(int position) {
+					return 0;
+				}
+
+				@Override
+				public View getView(int position, View convertView, ViewGroup parent) {
+					Log.d("Calling getView ", "called");
+	            	
+					View view;
+					if (convertView == null) {
+						view = View.inflate(getApplicationContext(), R.layout.item,
+								null);
+					} else {
+						view = convertView;
+	
+					}
+					
+					
+					SmartImageView iv_icon = (SmartImageView) view.findViewById(R.id.iv_icon);
+					TextView tv_name = (TextView) view.findViewById(R.id.tv_name);
+					TextView tv_rating = (TextView) view.findViewById(R.id.tv_rating);
+					TextView tv_phone = (TextView) view.findViewById(R.id.tv_phone);
+                    
+					//展示图片
+//					iv_icon.setImageUrl(imageUrl);
+					//iv_icon.setImageUrl(imageUrl, R.drawable.bg);
+					
+					// 显示数据
+					tv_name.setText(storeLists.get(position).getName());
+					tv_rating.setText(String.valueOf(storeLists.get(position).getRating()));
+					tv_phone.setText(storeLists.get(position).getPhone());
+					iv_icon.setImageUrl(storeLists.get(position).getImage_url());
+											
+
+return view;
+				}
+			}
+	
+
 }
 
+	
 
-
-
-//try {
-//JSONObject json = new JSONObject(str);
-//json.getJSONArray(str);
-//JSONObject response = array.getJSONObject(0);
-//String res = response.getString("test");
-//System.out.println(res);
-//tv_html.setText(res);
-//} catch (JSONException e) {
-//	// TODO Auto-generated catch block
-//	e.printStackTrace();
-//}
-
-
-
-/*
- try {
-		response = (JSONObject) parser.parse(str);
- 	String test = (String)response.get("test");
-		System.out.println(test);
-		//tv_html.setText(test);
-	} catch (Exception e) {
-		// TODO Auto-generated catch block
-		e.printStackTrace();
-		Toast.makeText(getApplicationContext(), "parse fail", 1).show();
-	}
-*/		
-
-/*
-String searchResponseJSON = responseBody.toString();
-JSONParser parser = new JSONParser();
-JSONObject response = null;
-
- try {
-		response = (JSONObject) parser.parse(searchResponseJSON);
-	    int total = response.getInt("total");
-		System.out.println(total);
-		tv_html.setText(String.valueOf(total));
-*/		
-//		JSONArray businesses = (JSONArray) response.get("businesses");
-//		JSONObject firstBusiness = (JSONObject) businesses.get(0);
-//		String firstBusinessID = firstBusiness.get("id").toString();
-//		System.out.println(firstBusinessID);
-		//tv_html.setText(firstBusinessID);
-
- 
-
-// System.out.println(String.format(
-//     "%s businesses found, querying business info for the top result \"%s\" ...",
-//     businesses.size(), firstBusinessID));
-//
- // Select the first business and display business details
-// String businessResponseJSON = yelpApi.searchByBusinessId(firstBusinessID.toString());
-// System.out.println(String.format("Result for business \"%s\" found:", firstBusinessID));
-// System.out.println(businessResponseJSON);

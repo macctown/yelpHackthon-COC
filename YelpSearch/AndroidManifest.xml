@@ -16,7 +16,7 @@
         android:theme="@style/AppTheme" >
         <activity
             android:name="com.itheima.login.MainActivity"
-            android:label="@string/app_name" >
+            android:label="Welcome!" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -25,10 +25,14 @@
             
         </activity>
         
-
+        
+        <activity
+            android:name="com.itheima.login.ListViewActivity"
+            android:label="" 
+        />
         <activity
             android:name="com.itheima.login.SearchNearbyActivity"
-            android:label="@string/app_name" 
+            android:label="Search Nearby" 
         />
         
         <activity

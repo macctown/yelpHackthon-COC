@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="80dp" >
+
+    <com.loopj.android.image.SmartImageView
+        android:id="@+id/iv_icon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_launcher" />
+ 
+    
+    <TextView
+        android:id="@+id/tv_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="3dp"
+        android:ellipsize="end"
+        android:singleLine="true"
+        android:text="name"
+        android:textColor="#000000"
+        android:layout_toRightOf="@id/iv_icon"
+        android:textSize="18sp" />
+     
+    <TextView
+        android:id="@+id/tv_rating1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/tv_name"
+        android:ellipsize="end"
+        android:maxLines="2"
+        android:textColor="#000000"
+        android:text="Rating:"
+        android:layout_toRightOf="@id/iv_icon"
+        android:textSize="14sp" />
+    
+    
+    
+    <TextView
+        android:id="@+id/tv_rating"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/tv_name"
+        android:ellipsize="end"
+        android:maxLines="2"
+        android:text="rating"
+        android:textColor="#999999"
+        android:layout_toRightOf="@id/tv_rating1"
+        android:textSize="14sp" />
+        
+    
+    <TextView
+        android:id="@+id/tv_phone1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Tel:"
+        android:textColor="#000000"
+        android:layout_alignBottom="@id/iv_icon"
+        android:layout_below="@+id/tv_rating"
+        android:layout_toRightOf="@id/iv_icon"
+        android:textSize="14sp" />
+        
+    
+    <TextView
+        android:id="@+id/tv_phone"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="tel"
+        android:textColor="#999999"
+        android:layout_alignBottom="@id/iv_icon"
+        android:layout_toRightOf="@id/tv_phone1"
+        android:layout_below="@+id/tv_rating"
+        android:textSize="14sp" />
+        
+</RelativeLayout>

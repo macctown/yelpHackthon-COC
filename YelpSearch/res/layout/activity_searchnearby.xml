@@ -1,4 +1,4 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -7,8 +7,8 @@
     
     >
 
-    <TextView    
-        android:layout_marginTop="15dp"
+    <TextView 
+        android:id="@+id/tv"   
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textSize="20sp"
@@ -16,24 +16,38 @@
         />
         
     <EditText
-        android:layout_marginTop="15dp"
         android:id="@+id/et"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textSize="15sp"
-        android:hint="Type in range (miles):" />
+        android:layout_width="wrap_content"
+        android:layout_height="40dp"
+        android:layout_alignParentLeft="true"
+        android:layout_alignRight="@+id/tv"
+        android:layout_below="@id/tv"
+        android:hint="Type in range (miles):"
+        android:textSize="15sp" />
 
     <Button
-        android:layout_gravity="center_horizontal"
-        android:layout_marginTop="15dp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:id="@+id/btn_nearby"
+        android:layout_width="5dp"
+        android:layout_height="35dp"
+        android:layout_alignParentRight="true"
+        android:layout_below="@id/tv"
+        android:layout_toRightOf="@+id/tv"
         android:onClick="clickSearchNearby"
         android:text="Search" />
+      
+    <ListView
+        android:layout_below="@id/btn_nearby"
+        android:id="@+id/lv"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" >
+    </ListView>
 
+    <!-- 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" >
+        android:layout_height="wrap_content" 
+        android:layout_below="@id/et"
+    >
     
     <TextView    
         android:layout_marginTop="15dp"
@@ -43,4 +57,5 @@
         android:id="@+id/tv_html"
      />
     </ScrollView>
-</LinearLayout>
+     -->
+</RelativeLayout>
